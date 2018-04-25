@@ -2,6 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 const Home = resolve => require(['@/pages/Home'], resolve);
+const CommodityList = resolve => require(['@/pages/CommodityList'], resolve);
+const OrderList = resolve => require(['@/pages/OrderList'], resolve);
+const UserList = resolve => require(['@/pages/UserList'], resolve);
 
 Vue.use(Router)
 
@@ -9,7 +12,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: Home
+      redirect: '/commodityManage'
     },
     {
     	path:'/login',
@@ -20,12 +23,14 @@ export default new Router({
     	name: '商品管理',
     	menuShow: true,
     	hasChild: true,
+        component: Home,
     	iconfont: 'iconfont icon-shangpinguanli',
     	redirect: '/commodityManage/commodityList',
     	children:[
     		{
     			path: '/commodityManage/commodityList',
     			name: '商品列表',
+                component: CommodityList,   
     			menuShow: true,
     		},
     		{
@@ -38,6 +43,7 @@ export default new Router({
     {
     	path: '/orderManage',
     	name: '订单管理',
+        component: Home,
     	menuShow: true,
     	hasChild: true,
     	iconfont: 'iconfont icon-dingdanguanli',
@@ -46,26 +52,14 @@ export default new Router({
     			path: '/orderManage/orderList',
     			name: '订单列表',
     			menuShow: true,
+                component: OrderList
     		},
     	]
     },
     {
     	path: '/userManage',
     	name: '用户管理',
-    	menuShow: true,
-    	hasChild: true,
-    	iconfont: 'iconfont icon-dingdanguanli',
-    	children:[
-    		{
-    			path: '/orderManage/orderList',
-    			name: '订单列表',
-    			menuShow: true,
-    		},
-    	]
-    },
-    {
-    	path: '/userManage',
-    	name: '用户管理',
+        component: Home,
     	menuShow: true,
     	hasChild: true,
     	iconfont: 'iconfont icon-Management',
@@ -73,6 +67,7 @@ export default new Router({
     		{
     			path: '/userManage/userList',
     			name: '用户列表',
+                component: UserList,
     			menuShow: true,
     		},
     		{
@@ -85,6 +80,7 @@ export default new Router({
     {
     	path: '/shareManage',
     	name: '分享管理',
+        component: Home,
     	menuShow: true,
     	hasChild: true,
     	iconfont: 'iconfont icon-fenxiang',
@@ -99,6 +95,7 @@ export default new Router({
     {
     	path: '/statisticalReport',
     	name: '统计报表',
+        component: Home,
     	menuShow: true,
     	hasChild: false,
     	iconfont: 'iconfont icon-tongji',

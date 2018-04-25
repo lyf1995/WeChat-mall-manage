@@ -11,7 +11,7 @@
 					</el-menu-item>
 				</el-submenu>
 				<el-menu-item :index="item.path" v-else>
-					{{item.name}}
+					<i :class="item.iconfont"></i>{{item.name}}
 				</el-menu-item>
 			</template>
 		</el-menu>

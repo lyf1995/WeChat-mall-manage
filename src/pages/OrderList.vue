@@ -1,24 +1,26 @@
 <template>
-	<div class="commodity_list">
+	<div class="order_list">
 		<el-card class="search_card">
 			<el-form :inline="true" :model="searchInfo" style="width:100%;"  label-position="right"  label-width="100px">
-				<el-form-item label="商品名称">
-    				<el-input v-model="searchInfo.name" placeholder="商品名称"></el-input>
+				<el-form-item label="订单编号">
+    				<el-input v-model="searchInfo.number" placeholder="订单编号"></el-input>
   				</el-form-item>
-  				<el-form-item label="商品描述">
-    				<el-input v-model="searchInfo.subtitle" placeholder="商品描述"></el-input>
+  				<el-form-item label="订单状态">
+    				<el-select v-model="searchInfo.status" placeholder="订单状态" clearable>
+    					<el-option label="待付款" value="0"></el-option>
+    					<el-option label="待发货" value="1"></el-option>
+    					<el-option label="待收货" value="2"></el-option>
+    					<el-option label="已完成" value="3"></el-option>
+    				</el-select>
   				</el-form-item>
-  				<el-form-item label="商品分类">
-    				<el-input v-model="searchInfo.categoryName" placeholder="商品分类"></el-input>
+  				<el-form-item label="客户信息">
+    				<el-input v-model="searchInfo.custormerInfo" placeholder="客户信息"></el-input>
   				</el-form-item>
-  				<el-form-item label="零售价">
-    				<el-input v-model="searchInfo.marketPrice" placeholder="零售价"></el-input>
+  				<el-form-item label="创建时间">
+    				<el-input v-model="searchInfo.setUpTime" placeholder="创建时间"></el-input>
   				</el-form-item>
-  				<el-form-item label="会员价">
-    				<el-input v-model="searchInfo.vipPrice" placeholder="会员价"></el-input>
-  				</el-form-item>
-  				<el-form-item label="库存">
-    				<el-input v-model="searchInfo.vipPrice" placeholder="库存"></el-input>
+  				<el-form-item label="备注">
+    				<el-input v-model="searchInfo.remarks" placeholder="备注"></el-input>
   				</el-form-item>
 			</el-form>
 			<div class="search_btn">
@@ -40,17 +42,18 @@
 				</el-button>
 				<el-button type="primary" class="operation_btn">
 					<i class="iconfont icon-icon--"></i>
-					新增商品
+					新增订单
 				</el-button>
 			</div>
 			<el-table :data="commodityList" border style="width: 100%" v-loading="loading">
 				<el-table-column type="index" label="序号" width="50"></el-table-column>
-				<el-table-column prop="name" label="商品名称"></el-table-column>
-				<el-table-column prop="subtitle" label="商品描述"></el-table-column>
-				<el-table-column prop="marketPrice" label="零售价"></el-table-column>
-				<el-table-column prop="vipPrice" label="会员价"></el-table-column>
-				<el-table-column prop="stock" label="库存"></el-table-column>
-				<el-table-column prop="categoryName" label="商品分类"></el-table-column>
+				<el-table-column prop="number" label="订单编号"></el-table-column>
+				<el-table-column prop="status" label="订单状态"></el-table-column>
+				<el-table-column prop="custormerInfo" label="客户信息"></el-table-column>
+				<el-table-column prop="vipPrice" label="订单详情"></el-table-column>
+				<el-table-column prop="stock" label="收货信息"></el-table-column>
+				<el-table-column prop="money" label="金额"></el-table-column>
+				<el-table-column prop="categoryName" label="备注"></el-table-column>
 				<el-table-column label="操作" width="200" fixed="right" align="center">
       				<template slot-scope="scope">
         				<el-button size="mini" type="primary">
@@ -98,7 +101,7 @@
 	}
 </script>
 <style scoped>
-	.commodity_list{
+	.order_list{
 		padding-bottom: 20px;
 		background: #fff;
 	}

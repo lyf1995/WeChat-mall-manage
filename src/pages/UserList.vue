@@ -1,24 +1,18 @@
 <template>
-	<div class="commodity_list">
+	<div class="user_list">
 		<el-card class="search_card">
 			<el-form :inline="true" :model="searchInfo" style="width:100%;"  label-position="right"  label-width="100px">
-				<el-form-item label="商品名称">
-    				<el-input v-model="searchInfo.name" placeholder="商品名称"></el-input>
+				<el-form-item label="用户名">
+    				<el-input v-model="searchInfo.usernmae" placeholder="用户名"></el-input>
   				</el-form-item>
-  				<el-form-item label="商品描述">
-    				<el-input v-model="searchInfo.subtitle" placeholder="商品描述"></el-input>
+  				<el-form-item label="手机号码">
+    				<el-input v-model="searchInfo.phone" placeholder="手机号码"></el-input>
   				</el-form-item>
-  				<el-form-item label="商品分类">
-    				<el-input v-model="searchInfo.categoryName" placeholder="商品分类"></el-input>
+  				<el-form-item label="注册时间">
+    				<el-input v-model="searchInfo.registTime" placeholder="注册时间"></el-input>
   				</el-form-item>
-  				<el-form-item label="零售价">
-    				<el-input v-model="searchInfo.marketPrice" placeholder="零售价"></el-input>
-  				</el-form-item>
-  				<el-form-item label="会员价">
-    				<el-input v-model="searchInfo.vipPrice" placeholder="会员价"></el-input>
-  				</el-form-item>
-  				<el-form-item label="库存">
-    				<el-input v-model="searchInfo.vipPrice" placeholder="库存"></el-input>
+  				<el-form-item label="最近登录时间">
+    				<el-input v-model="searchInfo.recentLoginTime" placeholder="最近登录时间"></el-input>
   				</el-form-item>
 			</el-form>
 			<div class="search_btn">
@@ -40,17 +34,16 @@
 				</el-button>
 				<el-button type="primary" class="operation_btn">
 					<i class="iconfont icon-icon--"></i>
-					新增商品
+					新增用户
 				</el-button>
 			</div>
 			<el-table :data="commodityList" border style="width: 100%" v-loading="loading">
 				<el-table-column type="index" label="序号" width="50"></el-table-column>
-				<el-table-column prop="name" label="商品名称"></el-table-column>
-				<el-table-column prop="subtitle" label="商品描述"></el-table-column>
-				<el-table-column prop="marketPrice" label="零售价"></el-table-column>
-				<el-table-column prop="vipPrice" label="会员价"></el-table-column>
-				<el-table-column prop="stock" label="库存"></el-table-column>
-				<el-table-column prop="categoryName" label="商品分类"></el-table-column>
+				<el-table-column prop="username" label="用户名"></el-table-column>
+				<el-table-column prop="phone" label="手机号码"></el-table-column>
+				<el-table-column prop="password" label="密码"></el-table-column>
+				<el-table-column prop="registTime" label="创建时间"></el-table-column>
+				<el-table-column prop="recentLoginTime" label="最近登陆时间"></el-table-column>
 				<el-table-column label="操作" width="200" fixed="right" align="center">
       				<template slot-scope="scope">
         				<el-button size="mini" type="primary">
@@ -98,7 +91,7 @@
 	}
 </script>
 <style scoped>
-	.commodity_list{
+	.user_list{
 		padding-bottom: 20px;
 		background: #fff;
 	}
