@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50714
 File Encoding         : 65001
 
-Date: 2018-04-25 09:39:40
+Date: 2018-04-25 17:39:27
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -43,11 +43,13 @@ DROP TABLE IF EXISTS `goods`;
 CREATE TABLE `goods` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT '',
-  `price` float DEFAULT NULL,
+  `vip_price` float(10,0) DEFAULT NULL,
+  `price` float(10,0) DEFAULT NULL,
   `introduce` varchar(255) DEFAULT '',
+  `stock` float(10,0) DEFAULT NULL,
   `mainImage` varchar(255) DEFAULT NULL,
-  `carouselImage` varchar(255) DEFAULT NULL,
-  `detailImage` varchar(255) DEFAULT NULL,
+  `carouselImage` varchar(255) DEFAULT '',
+  `detailImage` varchar(255) DEFAULT '',
   `typeId` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `typeId` (`typeId`)
