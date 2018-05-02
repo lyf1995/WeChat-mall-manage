@@ -11,7 +11,7 @@
 							<el-input v-model="commodityInfo.name" placeholder="商品名称"></el-input>
 						</el-form-item>
 						<el-form-item label="商品分类">
-							<el-select :model="commodityInfo.categoryName" placeholder="商品分类" style="width:100%;">
+							<el-select v-model="commodityInfo.categoryName" placeholder="商品分类" style="width:100%;">
 								<el-option label="分类一" value="分类一"></el-option>
 							</el-select>
 						</el-form-item>

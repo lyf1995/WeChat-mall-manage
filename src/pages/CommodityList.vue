@@ -34,29 +34,29 @@
 					<i class="iconfont icon-tubiao105"></i>
 					导出
 				</el-button>
-				<el-button type="primary" class="operation_btn">
+				<el-button type="primary" class="operation_btn" @click="goToBatchAdd">
 					<i class="iconfont icon-icon-import"></i>
 					导入
 				</el-button>
-				<el-button type="primary" class="operation_btn">
+				<el-button type="primary" class="operation_btn" @click="goToAdd">
 					<i class="iconfont icon-icon--"></i>
 					新增商品
 				</el-button>
 			</div>
 			<el-table :data="commodityList" border style="width: 100%" v-loading="loading">
 				<el-table-column type="index" label="序号" width="50"></el-table-column>
-				<el-table-column prop="name" label="商品名称"></el-table-column>
-				<el-table-column prop="subtitle" label="商品描述"></el-table-column>
-				<el-table-column prop="marketPrice" label="零售价"></el-table-column>
-				<el-table-column prop="vipPrice" label="会员价"></el-table-column>
-				<el-table-column prop="stock" label="库存"></el-table-column>
-				<el-table-column prop="categoryName" label="商品分类"></el-table-column>
+				<el-table-column prop="name" label="商品名称" ></el-table-column>
+				<el-table-column prop="subtitle" label="商品描述" ></el-table-column>
+				<el-table-column prop="marketPrice" label="零售价" width="80"></el-table-column>
+				<el-table-column prop="vipPrice" label="会员价" width="80"></el-table-column>
+				<el-table-column prop="stock" label="库存" width="80"></el-table-column>
+				<el-table-column prop="categoryName" label="商品分类" width="100"></el-table-column>
 				<el-table-column label="操作" width="200" fixed="right" align="center">
       				<template slot-scope="scope">
         				<el-button size="mini" type="primary" @click="goToDetail(scope.row)">
         					<i class="iconfont icon-icon6" style="margin-right:5px;"></i>编辑
         				</el-button>
-        				<el-button size="mini" type="danger">
+        				<el-button size="mini" type="danger" @click="deleteCommodity(scope.row)">
         					<i class="iconfont icon-shanchu" style="margin-right:5px;"></i>删除
         				</el-button>
       				</template>
@@ -92,16 +92,55 @@
 		},
 		methods:{
 			search(){
-
+				console.log(this.searchInfo)
 			},
 			goToDetail(row){
 				this.$router.push({path:'/commodityManage/commodityDetail',query:{
 					id:row.id
 				}})
 			},
+			goToAdd(){
+				this.$router.push({path:'/commodityManage/addCommodity'})
+			},
+			goToBatchAdd(){
+				this.$router.push({path:'/commodityManage/batchAddCommodity'})
+			},
 			//导出
 			exportExcel(){
-
+				require.ensure([], () => {　　　　　　　　
+			    const { export_json_to_excel } = require('@/vendor/Export2Excel');　　//引入文件　　　　　　
+			    const tHeader = ['商品名称','商品描述','零售价','会员价','库存','商品分类']; //将对应的属性名转换成中文
+			    const filterVal = ['name','subtitle','marketPrice','vipPrice','stock','categoryName'];//table表格中对应的属性名
+			    const list = this.commodityList;
+			    tHeader.unshift('序号');
+				filterVal.unshift('index');
+			    for(let i=0;i<list.length;i++){
+			    	list[i].index=i+1+'';
+			    }　　　　　　
+			    const data = this.formatJson(filterVal, list);　　　　　
+			    export_json_to_excel(tHeader, data, '商品导出excel');
+			    })
+			},
+			formatJson(filterVal, jsonData) {
+				return jsonData.map(v => filterVal.map(j => v[j]));
+			},
+			deleteCommodity(row){
+				this.$confirm('是否确定删除?', '提示', {
+		          	confirmButtonText: '确定',
+	         	 	cancelButtonText: '取消',
+		          	type: 'warning'
+		        }).then(() => {
+		        	var params = {
+		        		id: parseInt(row.id)
+		        	};
+		        	this.$message({
+		        		message: '删除成功',
+		        		type: 'success'
+		        	})
+		          	
+		        }).catch(() => {
+		           
+		        });
 			}
 		}
 	}

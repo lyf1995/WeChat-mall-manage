@@ -16,11 +16,9 @@
   				<el-form-item label="客户信息">
     				<el-input v-model="searchInfo.custormerInfo" placeholder="客户信息"></el-input>
   				</el-form-item>
-  				<el-form-item label="创建时间">
-    				<el-input v-model="searchInfo.setUpTime" placeholder="创建时间"></el-input>
-  				</el-form-item>
-  				<el-form-item label="备注">
-    				<el-input v-model="searchInfo.remarks" placeholder="备注"></el-input>
+  				<el-form-item label="下单时间">
+  					<el-date-picker v-model="searchInfo.orderTime" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd">
+  					</el-date-picker>
   				</el-form-item>
 			</el-form>
 			<div class="search_btn">
@@ -45,15 +43,15 @@
 					新增订单
 				</el-button>
 			</div>
-			<el-table :data="commodityList" border style="width: 100%" v-loading="loading">
+			<el-table :data="orderList" border style="width: 100%" v-loading="loading">
 				<el-table-column type="index" label="序号" width="50"></el-table-column>
 				<el-table-column prop="number" label="订单编号"></el-table-column>
 				<el-table-column prop="status" label="订单状态"></el-table-column>
 				<el-table-column prop="custormerInfo" label="客户信息"></el-table-column>
-				<el-table-column prop="vipPrice" label="订单详情"></el-table-column>
-				<el-table-column prop="stock" label="收货信息"></el-table-column>
+				<el-table-column prop="detail" label="订单详情"></el-table-column>
 				<el-table-column prop="money" label="金额"></el-table-column>
-				<el-table-column prop="categoryName" label="备注"></el-table-column>
+				<el-table-column prop="remarks" label="备注"></el-table-column>
+				<el-table-column prop="orderTime" label="下单时间"></el-table-column>
 				<el-table-column label="操作" width="200" fixed="right" align="center">
       				<template slot-scope="scope">
         				<el-button size="mini" type="primary">
@@ -74,16 +72,16 @@
 			return{
 				loading: false,
 				searchInfo: {
-					name
+					number: '',
+					status: '',
+					custormerInfo: '', 
+					orderTime: '',
+					orderStartTime: '',
+					orderEndTime: ''
 				},
-				commodityList: [
+				orderList: [
 					{
-						name: '智利泰瑞贵族珍藏佳美娜干红葡萄酒750mL',
-						subtitle: '非凡深邃的红宝石颜色，红色浆果、烟草、巧克力和纯净的果香演绎珍藏赤霞珠的盛世繁华、热情而高雅',
-						marketPrice: '110',
-						vipPrice: '120',
-						stock: '10000',
-						categoryName: '食品生鲜'
+						
 					}
 				]
 			}

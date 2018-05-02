@@ -6,7 +6,10 @@ const CommodityList = resolve => require(['@/pages/CommodityList'], resolve);
 const OrderList = resolve => require(['@/pages/OrderList'], resolve);
 const UserList = resolve => require(['@/pages/UserList'], resolve);
 const CommodityDetail = resolve => require(['@/pages/CommodityDetail'], resolve);
+const AddCommodity = resolve => require(['@/pages/AddCommodity'], resolve);
+const BatchAddCommodity = resolve => require(['@/pages/BatchAddCommodity'], resolve);
 const CommodityCategory = resolve => require(['@/pages/CommodityCategory'], resolve);
+const BatchAddUser = resolve => require(['@/pages/BatchAddUser'], resolve);
 
 Vue.use(Router)
 
@@ -40,6 +43,18 @@ export default new Router({
                 name: '商品详情',
                 component: CommodityDetail,   
                 menuShow: false,
+            },
+            {
+                path: '/commodityManage/addCommodity',
+                name: '添加商品',
+                component: AddCommodity,   
+                menuShow: false,
+            },
+            {
+                path: '/commodityManage/batchAddCommodity',
+                name: '批量添加商品',
+                component: BatchAddCommodity,   
+                menuShow: true,
             },
     		{
     			path: '/commodityManage/commodityCategory',
@@ -83,6 +98,7 @@ export default new Router({
     			path: '/userManage/batchAddUser',
     			name: '批量创建用户',
     			menuShow: true,
+                component: BatchAddUser
     		}
     	]
     },
