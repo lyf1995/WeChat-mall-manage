@@ -11,14 +11,14 @@
   				<el-form-item label="商品分类">
     				<el-input v-model="searchInfo.categoryName" placeholder="商品分类"></el-input>
   				</el-form-item>
-  				<el-form-item label="零售价">
-    				<el-input v-model="searchInfo.marketPrice" placeholder="零售价"></el-input>
-  				</el-form-item>
-  				<el-form-item label="会员价">
-    				<el-input v-model="searchInfo.vipPrice" placeholder="会员价"></el-input>
-  				</el-form-item>
   				<el-form-item label="库存">
-    				<el-input v-model="searchInfo.vipPrice" placeholder="库存"></el-input>
+    				<el-input v-model="searchInfo.stock" placeholder="库存"></el-input>
+  				</el-form-item>
+  				<el-form-item label="状态">
+    				<el-select v-model="searchInfo.status" placeholder="状态">
+    					<el-option value="未删除" label="未删除"></el-option>
+    					<el-option value="已删除" label="已删除"></el-option>
+    				</el-select>
   				</el-form-item>
 			</el-form>
 			<div class="search_btn">
@@ -53,7 +53,7 @@
 				<el-table-column prop="categoryName" label="商品分类"></el-table-column>
 				<el-table-column label="操作" width="200" fixed="right" align="center">
       				<template slot-scope="scope">
-        				<el-button size="mini" type="primary">
+        				<el-button size="mini" type="primary" @click="goToDetail(scope.row)">
         					<i class="iconfont icon-icon6" style="margin-right:5px;"></i>编辑
         				</el-button>
         				<el-button size="mini" type="danger">
@@ -71,10 +71,15 @@
 			return{
 				loading: false,
 				searchInfo: {
-					name
+					name: '',
+					subtitle: '',
+					categoryName: '',
+					stock: '',
+					status: '未删除'
 				},
 				commodityList: [
 					{
+						id: 1,
 						name: '智利泰瑞贵族珍藏佳美娜干红葡萄酒750mL',
 						subtitle: '非凡深邃的红宝石颜色，红色浆果、烟草、巧克力和纯净的果香演绎珍藏赤霞珠的盛世繁华、热情而高雅',
 						marketPrice: '110',
@@ -89,7 +94,11 @@
 			search(){
 
 			},
-
+			goToDetail(row){
+				this.$router.push({path:'/commodityManage/commodityDetail',query:{
+					id:row.id
+				}})
+			},
 			//导出
 			exportExcel(){
 

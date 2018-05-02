@@ -5,6 +5,7 @@ const Home = resolve => require(['@/pages/Home'], resolve);
 const CommodityList = resolve => require(['@/pages/CommodityList'], resolve);
 const OrderList = resolve => require(['@/pages/OrderList'], resolve);
 const UserList = resolve => require(['@/pages/UserList'], resolve);
+const CommodityDetail = resolve => require(['@/pages/CommodityDetail'], resolve);
 
 Vue.use(Router)
 
@@ -33,6 +34,12 @@ export default new Router({
                 component: CommodityList,   
     			menuShow: true,
     		},
+            {
+                path: '/commodityManage/commodityDetail',
+                name: '商品详情',
+                component: CommodityDetail,   
+                menuShow: false,
+            },
     		{
     			path: '/commodityManage/commodityClass',
     			name: '商品分类',
