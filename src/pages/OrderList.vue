@@ -30,14 +30,14 @@
 		</el-card>
 		<el-card>
 			<div class="operation_wrap clearfix">
-				<el-button type="primary" class="operation_btn" @click="exportExcel">
+				<!-- <el-button type="primary" class="operation_btn" @click="exportExcel">
 					<i class="iconfont icon-tubiao105"></i>
 					导出
 				</el-button>
 				<el-button type="primary" class="operation_btn">
 					<i class="iconfont icon-icon-import"></i>
 					导入
-				</el-button>
+				</el-button> -->
 				<el-button type="primary" class="operation_btn">
 					<i class="iconfont icon-icon--"></i>
 					新增订单
@@ -47,9 +47,32 @@
 				<el-table-column type="index" label="序号" width="50"></el-table-column>
 				<el-table-column prop="number" label="订单编号"></el-table-column>
 				<el-table-column prop="status" label="订单状态"></el-table-column>
-				<el-table-column prop="custormerInfo" label="客户信息"></el-table-column>
-				<el-table-column prop="detail" label="订单详情"></el-table-column>
+				<el-table-column prop="custormer" label="下单客户"></el-table-column>
+				<el-table-column label="订单详情" width="300">
+					<template slot-scope="scope">
+        				<div class="commodity" v-for="(item, index) in scope.row.commodityList" style="padding-bottom:10px;">
+        					<p>{{item.commodityName}}</p>
+        					<p>单价:{{item.commodityVipPrice}}元/件</p>
+        					<p>数量:{{item.commodityNumber}}/件</p>
+        				</div>
+      				</template>
+				</el-table-column>
 				<el-table-column prop="money" label="金额"></el-table-column>
+				<el-table-column label="收货信息">
+					<template slot-scope="scope">
+        				<el-tooltip placement="right">
+						  	<div slot="content" style="width:300px;">
+						  		<div class="tool_top">收货信息</div>
+						  		<div class="tool_middle">
+						  			<p>收货人：{{scope.row.receiptInfo.receiptName}}</p>
+						  			<p>手机号码：{{scope.row.receiptInfo.receiptPhone}}</p>
+						  			<p>收货地址：{{scope.row.receiptInfo.receiptAddress}}</p>
+						  		</div>
+						  	</div>
+						  	<el-button>收货人：{{scope.row.receiptInfo.receiptName}}</el-button>
+						</el-tooltip>
+      				</template>
+				</el-table-column>
 				<el-table-column prop="remarks" label="备注"></el-table-column>
 				<el-table-column prop="orderTime" label="下单时间"></el-table-column>
 				<el-table-column label="操作" width="200" fixed="right" align="center">
@@ -81,7 +104,29 @@
 				},
 				orderList: [
 					{
-						
+						number:'D111111111111',
+						status: '代付款',
+						custormer: '张三',
+						commodityList: [
+							{
+								commodityName:'浙江象山红美人柑橘--T12 4.5斤/盒 12颗/盒',
+								commodityNumber: '1',
+								commodityVipPrice: '100'
+							},
+							{
+								commodityName:'浙江象山红美人柑橘--T12 4.5斤/盒 12颗/盒',
+								commodityNumber: '1',
+								commodityVipPrice: '100'
+							}
+						],
+						money: '200',
+						receiptInfo: {
+							receiptName:'李四',
+							receiptPhone:'17826804660',
+							receiptAddress:'浙江省杭州市西湖区留下街道留和路西和公寓'
+						},
+						remarks: '备注',
+						orderTime: '2017-01-01'
 					}
 				]
 			}
@@ -119,5 +164,14 @@
 	}
 	.operation_btn i{
 		margin-right: 5px;
+	}
+	.tool_top{
+		font-size: 16px;
+		border-bottom: 1px solid #fff;
+		padding: 10px 0;
+	}
+	.tool_middle p{
+		padding: 5px 0;
+		font-size: 14px;
 	}
 </style>
