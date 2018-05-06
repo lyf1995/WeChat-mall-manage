@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 const Home = resolve => require(['@/pages/Home'], resolve);
+const Login = resolve => require(['@/pages/Login'], resolve);
 const CommodityList = resolve => require(['@/pages/CommodityList'], resolve);
 const OrderList = resolve => require(['@/pages/OrderList'], resolve);
 const UserList = resolve => require(['@/pages/UserList'], resolve);
@@ -17,11 +18,12 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/commodityManage'
+      redirect: '/login'
     },
     {
     	path:'/login',
     	name:'登录',
+        component: Login
     },
     {
     	path: '/commodityManage',

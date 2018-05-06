@@ -5,16 +5,16 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state={
-	localAccount:{},
+	accountInfo:{},
 	apiHead:{},
 }
 
 const mutations={
 	initAccount(state){
-		state.localAccount = {};
+		state.accountInfo = {};
 	},
-	keepAccount(state,localAccount){
-		state.localAccount = localAccount;
+	keepAccount(state,accountInfo){
+		state.accountInfo = accountInfo;
 	},
 	initApiHead(state){
 
@@ -22,9 +22,9 @@ const mutations={
 }
 
 
-//通过保存到localStorage来解决vuex中的数据页面刷新丢失的问题
+//通过保存到sessionStorage来解决vuex中的数据页面刷新丢失的问题
 for(let item in state){
-	localStorage.getItem(item)?state[item] = JSON.parse(localStorage.getItem(item)): false;
+	sessionStorage.getItem(item)?state[item] = JSON.parse(sessionStorage.getItem(item)): false;
 }
 
 export default new Vuex.Store({

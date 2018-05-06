@@ -30,18 +30,18 @@
 		</el-card>
 		<el-card>
 			<div class="operation_wrap clearfix">
-				<!-- <el-button type="primary" class="operation_btn" @click="exportExcel">
+				<el-button type="primary" class="operation_btn" @click="exportExcel">
 					<i class="iconfont icon-tubiao105"></i>
 					导出
 				</el-button>
-				<el-button type="primary" class="operation_btn">
+				<!-- <el-button type="primary" class="operation_btn">
 					<i class="iconfont icon-icon-import"></i>
 					导入
 				</el-button> -->
-				<el-button type="primary" class="operation_btn">
+				<!-- <el-button type="primary" class="operation_btn">
 					<i class="iconfont icon-icon--"></i>
 					新增订单
-				</el-button>
+				</el-button> -->
 			</div>
 			<el-table :data="orderList" border style="width: 100%" v-loading="loading">
 				<el-table-column type="index" label="序号" width="50"></el-table-column>
@@ -78,11 +78,11 @@
 				<el-table-column label="操作" width="200" fixed="right" align="center">
       				<template slot-scope="scope">
         				<el-button size="mini" type="primary">
-        					<i class="iconfont icon-icon6" style="margin-right:5px;"></i>编辑
+        					<i class="iconfont icon-icon6" style="margin-right:5px;"></i>发货
         				</el-button>
-        				<el-button size="mini" type="danger">
+        				<!-- <el-button size="mini" type="danger">
         					<i class="iconfont icon-shanchu" style="margin-right:5px;"></i>删除
-        				</el-button>
+        				</el-button> -->
       				</template>
 				</el-table-column>
 			</el-table>
