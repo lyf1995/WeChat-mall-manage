@@ -23,3 +23,11 @@ export const AddType = params=>{ return axios.post(`${base}/commodity/addType`, 
 export const UpdateType = params=>{ return axios.post(`${base}/commodity/updateType`, params).then(res => res.data).catch(error=>error); };
 //删除商品分类
 export const DeleteType = params=>{ return axios.post(`${base}/commodity/deleteType`, params).then(res => res.data).catch(error=>error); };
+//查询所有商品
+export const SelectAllCommodity = params=>{ return axios.post(`${base}/commodity/selectAllCommodity`, params).then(res => res.data).catch(error=>error); };
+//新增商品分类
+export const AddCommodity = params=>{ return axios.post(`${base}/commodity/addCommodity`, params).then(res => res.data).catch(error=>error); };
+//修改商品分类
+export const UpdateCommodity = params=>{ return axios.post(`${base}/commodity/updateCommodity`, params).then(res => res.data).catch(error=>error); };
+//删除商品分类
+export const DeleteCommodity = params=>{ return axios.post(`${base}/commodity/deleteCommodity`, params).then(res => res.data).catch(error=>error); };

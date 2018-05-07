@@ -9,15 +9,14 @@
     				<el-input v-model="searchInfo.subtitle" placeholder="商品描述"></el-input>
   				</el-form-item>
   				<el-form-item label="商品分类">
-    				<el-input v-model="searchInfo.categoryName" placeholder="商品分类"></el-input>
-  				</el-form-item>
-  				<el-form-item label="库存">
-    				<el-input v-model="searchInfo.stock" placeholder="库存"></el-input>
+    				<el-select v-model="searchInfo.categoryName" placeholder="商品分类" clearable>
+    					<el-option v-for="(item, index) in categoryList" :value="item.id" :label="item.typeName" :key="index"></el-option>
+    				</el-select>
   				</el-form-item>
   				<el-form-item label="状态">
     				<el-select v-model="searchInfo.status" placeholder="状态">
-    					<el-option value="未删除" label="未删除"></el-option>
-    					<el-option value="已删除" label="已删除"></el-option>
+    					<el-option value="0" label="未删除"></el-option>
+    					<el-option value="1" label="已删除"></el-option>
     				</el-select>
   				</el-form-item>
 			</el-form>
@@ -62,37 +61,94 @@
       				</template>
 				</el-table-column>
 			</el-table>
+			<div class="pagination_wrap">
+  				<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"  :page-sizes="[15, 30, 100, 200]"
+  				:page-size="searchInfo.pageSize" :current-page="searchInfo.pageIndex" layout="total, sizes, prev, pager, next, jumper" :total="searchInfo.total">
+			    </el-pagination>
+  			</div>
 		</el-card>
 	</div>
 </template>
 <script>
+	import { SelectAllCommodity, AddCommodity, UpdateCommodity, DeleteCommodity, SelectAllType } from '@/js/api'
 	export default {
 		data(){
 			return{
 				loading: false,
+				categoryList:[],
 				searchInfo: {
 					name: '',
 					subtitle: '',
 					categoryName: '',
-					stock: '',
-					status: '未删除'
+					status: '0',
+					pageIndex: 1,
+					pageSize: 15,
+					pageTotal: 0
 				},
 				commodityList: [
-					{
-						id: 1,
-						name: '智利泰瑞贵族珍藏佳美娜干红葡萄酒750mL',
-						subtitle: '非凡深邃的红宝石颜色，红色浆果、烟草、巧克力和纯净的果香演绎珍藏赤霞珠的盛世繁华、热情而高雅',
-						marketPrice: '110',
-						vipPrice: '120',
-						stock: '10000',
-						categoryName: '食品生鲜'
-					}
+					// {
+					// 	id: 1,
+					// 	name: '智利泰瑞贵族珍藏佳美娜干红葡萄酒750mL',
+					// 	subtitle: '非凡深邃的红宝石颜色，红色浆果、烟草、巧克力和纯净的果香演绎珍藏赤霞珠的盛世繁华、热情而高雅',
+					// 	marketPrice: '110',
+					// 	vipPrice: '120',
+					// 	stock: '10000',
+					// 	categoryName: '食品生鲜'
+					// }
 				]
 			}
 		},
 		methods:{
+			//获取所有商品分类
+			selectAllType(){
+				SelectAllType({id: '',typeName: ''}).then(data =>{
+					let { errMsg, errCode, value, success, extraInfo } = data;
+					if(success){
+						this.categoryList = value;
+					}
+					else{
+						this.$message({
+							message: errMsg,
+							type: 'error'
+						})
+					}
+					this.loading = false;
+				});
+			},
+			getCommodityInfoList(){
+				this.loading = true;
+				let params = JSON.parse(JSON.stringify(this.searchInfo));
+				SelectAllCommodity(params).then(data =>{
+					let { errMsg, errCode, value, success, extraInfo } = data;
+					if(success){
+						this.commodityList = value;
+					}
+					else{
+						this.$message({
+							message: errMsg,
+							type: 'error'
+						})
+					}
+					this.loading = false;
+				});
+				let currentPath = this.$route.path;
+				this.$router.push({
+					path: currentPath,
+					query: {
+						search: JSON.stringify(params)
+					}
+				})
+			},
+			handleSizeChange(val){
+				this.searchInfo.pageSize=val;
+				this.getCommodityInfoList();
+			},
+			handleCurrentChange(val){
+				this.searchInfo.pageIndex=val;
+				this.getCommodityInfoList();
+			},
 			search(){
-				console.log(this.searchInfo)
+				this.getCommodityInfoList();
 			},
 			goToDetail(row){
 				this.$router.push({path:'/commodityManage/commodityDetail',query:{
@@ -142,6 +198,12 @@
 		           
 		        });
 			}
+		},
+		mounted(){
+			//获取所有商品分类
+			this.selectAllType();
+			//获取所有商品
+			this.getCommodityInfoList();
 		}
 	}
 </script>
