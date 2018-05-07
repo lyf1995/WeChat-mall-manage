@@ -8,16 +8,17 @@
 		<el-table :data="userList"   @selection-change="selsChange" style="width: 100%;" :height="tableHeight" border>
 			<el-table-column type="selection" fixed></el-table-column>
 			<el-table-column type="index" label="序号" width="50"></el-table-column>
-			<el-table-column prop="username" label="用户名"></el-table-column>
-			<el-table-column prop="phone" label="手机号码"></el-table-column>
+			<el-table-column prop="phone" label="用户名(手机号码)"></el-table-column>
+			<el-table-column prop="name" label="姓名"></el-table-column>
 			<el-table-column prop="password" label="密码"></el-table-column>
 		</el-table>
 		<div class="batch-footer">
-			<el-button type="primary" @click="batchImport" :disabled="selections.length==0">批量导入</el-button>
+			<el-button type="primary" @click="batchImport" :disabled="selections.length==0" v-loading="loading">批量导入</el-button>
 		</div>
 	</div>
 </template>
 <script>
+	import { BatchAddUser } from '@/js/api'
 	export default{
 		data(){
 			var _this=this;
@@ -29,6 +30,7 @@
 				tableHeight:0,
 				selections: [], //列表选中行
 				userList:[],
+				loading: false
 			}
 		},
 		methods:{
@@ -92,11 +94,11 @@
 				for(var i=0;i<outdata.length;i++){
 					userObj={};
 					for(var key in outdata[i]){
-				      	if(key=='用户名'){
-				      		userObj['username']=outdata[i][key];
-				      	}
-				      	else if(key=='手机号码'){
+				      	if(key=='用户名(手机号码)'){
 				      		userObj['phone']=outdata[i][key];
+				      	}
+				      	else if(key=='姓名'){
+				      		userObj['name']=outdata[i][key];
 				      	}
 				      	else if(key=='密码'){
 				      		userObj['password']=outdata[i][key];
@@ -112,7 +114,25 @@
 			},
 			//批量导入
 			batchImport(){
-				console.log(this.userList);
+				this.loading = true;
+				let params = JSON.parse(JSON.stringify(this.selections));
+				BatchAddUser(params).then(data =>{
+					let { errMsg, errCode, value, success, extraInfo } = data;
+					if(success){
+						this.$message({
+							message: '导入成功',
+							type: 'success'
+						})
+					}
+					else{
+						this.$message({
+							message: extraInfo+errMsg,
+							type: 'error'
+						})
+					}
+					this.loading = false;
+				});
+
 			}	
 		},
 		created(){

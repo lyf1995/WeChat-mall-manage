@@ -167,10 +167,10 @@
 		methods:{
 			getUserInfoList(){
 				this.loading = true;
-				this.searchInfo.registStartTime = this.searchInfo.registTime[0]?this.searchInfo.registTime[0]:'';
-				this.searchInfo.registEndTime = this.searchInfo.registTime[1]?this.searchInfo.registTime[1]:'';
-				this.searchInfo.recentLoginStartTime = this.searchInfo.recentLoginTime[0]?this.searchInfo.recentLoginTime[0]:'';
-				this.searchInfo.recentLoginEndTime = this.searchInfo.recentLoginTime[1]?this.searchInfo.recentLoginTime[1]:'';
+				this.searchInfo.registStartTime = this.searchInfo.registTime?this.searchInfo.registTime[0]:'';
+				this.searchInfo.registEndTime = this.searchInfo.registTime?this.searchInfo.registTime[1]:'';
+				this.searchInfo.recentLoginStartTime = this.searchInfo.recentLoginTime?this.searchInfo.recentLoginTime[0]:'';
+				this.searchInfo.recentLoginEndTime = this.searchInfo.recentLoginTime?this.searchInfo.recentLoginTime[1]:'';
 				let params = JSON.parse(JSON.stringify(this.searchInfo));
 				SelectAllUser(params).then(data =>{
 					let { errMsg, errCode, value, success, extraInfo } = data;

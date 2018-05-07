@@ -6,7 +6,7 @@
     				<el-input v-model="searchInfo.id" placeholder="商品名称"></el-input>
   				</el-form-item>
 				<el-form-item label="分类名称">
-    				<el-input v-model="searchInfo.name" placeholder="商品名称"></el-input>
+    				<el-input v-model="searchInfo.typeName" placeholder="商品名称"></el-input>
   				</el-form-item>
 			</el-form>
 			<div class="search_btn">
@@ -26,8 +26,8 @@
 			<el-table :data="categoryList" border style="width: 100%" v-loading="loading">
 				<el-table-column type="index" label="序号" width="50"></el-table-column>
 				<el-table-column prop="id" label="分类ID"></el-table-column>
-				<el-table-column prop="name" label="分类名称"></el-table-column>
-				<el-table-column prop="describe" label="分类描述"></el-table-column>
+				<el-table-column prop="typeName" label="分类名称"></el-table-column>
+				<el-table-column prop="typeDescribe" label="分类描述"></el-table-column>
 				<el-table-column label="操作" width="200" fixed="right" align="center">
       				<template slot-scope="scope">
         				<el-button size="mini" type="primary" @click.stop="categoryModalShow('edit',scope.row)">
@@ -42,13 +42,13 @@
 		</el-card>
 		<!-- 新增&修改分类模态框 -->
 		<el-dialog :visible.sync="categoryModal" :title="categoryTitle" width="700px">
-			<el-form :model="categoryInfo" style="width:100%;" label-width="100px">
+			<el-form :model="categoryInfo" style="width:100%;" label-width="100px" :rules="rules" ref="ruleForm">
 				<el-card class="clearfix">
-					<el-form-item label="分类名称">
-    					<el-input v-model="categoryInfo.name" placeholder="分类名称"></el-input>
+					<el-form-item label="分类名称" prop="typeName">
+    					<el-input v-model="categoryInfo.typeName" placeholder="分类名称"></el-input>
   					</el-form-item>
 					<el-form-item label="分类描述">
-    					<el-input v-model="categoryInfo.describe" placeholder="分类描述"></el-input>
+    					<el-input v-model="categoryInfo.typeDescribe" placeholder="分类描述"></el-input>
   					</el-form-item>
   					<div class="btn_wrap">
   						<el-button type="primary" v-if="categoryModalType=='add'" @click="addCategory">添加</el-button>
@@ -60,6 +60,7 @@
 	</div>
 </template>
 <script>
+	import { SelectAllType, AddType, UpdateType, DeleteType } from '@/js/api'
 	export default {
 		data(){
 			return{
@@ -68,26 +69,49 @@
 				categoryModalType: '',
 				categoryInfo: {
 					id: '',
-					name: '',
-					describe: ''
+					typeName: '',
+					typeDescribe: ''
 				},
 				loading: false,
 				searchInfo: {
 					id: '',
-					name: ''
+					typeName: ''
 				},
-				categoryList: [
-					{
-						id: 1,
-						name: '食品生鲜',
-						describe: '有关食品生鲜的商品分类',
-					}
-				]
+				categoryList: [],
+				rules:{
+					typeName:[
+						{ required: true, message: '请输入分类名称', trigger: 'blur' },
+					]
+				}
 			}
 		},
 		methods:{
+			getTypeInfoList(){
+				this.loading = true;
+				let params = JSON.parse(JSON.stringify(this.searchInfo));
+				SelectAllType(params).then(data =>{
+					let { errMsg, errCode, value, success, extraInfo } = data;
+					if(success){
+						this.categoryList = value;
+					}
+					else{
+						this.$message({
+							message: errMsg,
+							type: 'error'
+						})
+					}
+					this.loading = false;
+				});
+				let currentPath = this.$route.path;
+				this.$router.push({
+					path: currentPath,
+					query: {
+						search: JSON.stringify(params)
+					}
+				})
+			},
 			search(){
-				console.log(this.searchInfo);
+				this.getTypeInfoList();
 			},
 			goToDetail(row){
 				this.$router.push({path:'/commodityManage/commodityDetail',query:{
@@ -102,8 +126,8 @@
       				this.categoryModal=true;
       				this.categoryInfo={
       					id: '',
-	      				name: '',
-						describe: ''
+	      				typeName: '',
+						typeDescribe: ''
       				}
       			}
       			else if(type=='edit'){
@@ -114,18 +138,58 @@
       			}
       		},
       		addCategory(){
-      			console.log(this.categoryInfo);
-      			this.$message({
-					message:'添加成功',
-					type:'success'
-				})
+      			let params = JSON.parse(JSON.stringify(this.categoryInfo));
+      			this.$refs['ruleForm'].validate((valid) => { 
+      				if (valid) {
+      					AddType(params).then(data =>{
+      						let { errMsg, errCode, value, success, extraInfo } = data;
+							if(success){
+								this.$message({
+									message: '添加成功',
+									type: 'success'
+								});
+								this.getTypeInfoList();
+							}
+							else{
+								this.$message({
+									message: errMsg,
+									type: 'error'
+								})
+							}
+      					});
+      				}
+      				else {
+		            	console.log('error submit!!');
+		            	return false;
+		          	}
+      			});
       		},
 			editCategory(){
-				console.log(this.categoryInfo);
-				this.$message({
-					message:'修改成功',
-					type:'success'
-				})
+				let params = JSON.parse(JSON.stringify(this.categoryInfo));
+      			this.$refs['ruleForm'].validate((valid) => { 
+      				if (valid) {
+      					UpdateType(params).then(data =>{
+      						let { errMsg, errCode, value, success, extraInfo } = data;
+							if(success){
+								this.$message({
+									message: '修改成功',
+									type: 'success'
+								});
+								this.getTypeInfoList();
+							}
+							else{
+								this.$message({
+									message: errMsg,
+									type: 'error'
+								})
+							}
+      					});
+      				}
+      				else {
+		            	console.log('error submit!!');
+		            	return false;
+		          	}
+      			});
 			},
 			deleteCategory(row){
 				this.$confirm('是否确定删除?', '提示', {
@@ -136,15 +200,44 @@
 		        	var params = {
 		        		id: parseInt(row.id)
 		        	};
-		        	this.$message({
-		        		message: '删除成功',
-		        		type: 'success'
+		        	DeleteType(params).then(data =>{
+		        		let { errMsg, errCode, value, success, extraInfo } = data;
+		        		if(success){
+		        			this.$message({
+				        		message: '删除成功',
+				        		type: 'success'
+				        	});
+				        	this.getTypeInfoList();
+		        		}
+		        		else{
+		        			this.$message({
+				        		message: errMsg,
+				        		type: 'error'
+				        	});
+		        		}
 		        	})
+		        	
 		          	
 		        }).catch(() => {
 		           
 		        });
 			}
+		},
+		mounted(){
+			//获取当前url中的搜索参数
+			try
+			{
+				this.searchInfo=Object.assign(this.searchInfo,JSON.parse(this.$route.query.search));
+			}
+			catch(err)
+			{
+			  	this.searchInfo=Object.assign({},this.searchInfo);
+	  		}
+	  		//浏览器后退刷新页面
+			window.onpopstate = () => {  
+			    this.$router.go(0)
+			}
+			this.getTypeInfoList();
 		}
 	}
 </script>
