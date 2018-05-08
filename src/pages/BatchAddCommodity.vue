@@ -10,10 +10,10 @@
 			<el-table-column type="index" label="序号" width="50"></el-table-column>
 			<el-table-column prop="name" label="商品名称" ></el-table-column>
 			<el-table-column prop="subtitle" label="商品描述" ></el-table-column>
-			<el-table-column prop="marketPrice" label="零售价" width="80"></el-table-column>
+			<el-table-column prop="retailPrice" label="零售价" width="80"></el-table-column>
 			<el-table-column prop="vipPrice" label="会员价" width="80"></el-table-column>
 			<el-table-column prop="stock" label="库存" width="80"></el-table-column>
-			<el-table-column prop="categoryName" label="商品分类" width="100"></el-table-column>
+			<el-table-column prop="typeName" label="商品分类" width="100"></el-table-column>
 		</el-table>
 		<div class="batch-footer">
 			<el-button type="primary" @click="batchImport" :disabled="selections.length==0">批量导入</el-button>
@@ -21,6 +21,7 @@
 	</div>
 </template>
 <script>
+	import { BatchAddCommodity, SelectAllType } from '@/js/api'
 	export default{
 		data(){
 			var _this=this;
@@ -29,12 +30,28 @@
 				_this.tableHeight=a;
 			};
 			return{
+				typeList:[],
 				tableHeight:0,
 				selections: [], //列表选中行
 				commodityList:[],
 			}
 		},
 		methods:{
+			//获取所有商品分类
+			selectAllType(){
+				SelectAllType({id: '',typeName: ''}).then(data =>{
+					let { errMsg, errCode, value, success, extraInfo } = data;
+					if(success){
+						this.typeList = Object.assign(this.typeList,value);
+					}
+					else{
+						this.$message({
+							message: errMsg,
+							type: 'error'
+						})
+					}
+				});
+			},
 			//显示选择文件
 			showChooseFile(){
 				this.$refs.upload.click();
@@ -76,8 +93,15 @@
 							});
 						}
 						outdata = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
-						console.log(outdata);
 						_this.commodityList=_this.dateTransition(outdata);
+						for(let item of _this.commodityList){
+							for(let childItem of _this.typeList){
+								if(item.typeName === childItem.typeName){
+									item.typeId = childItem.id
+								}
+							}
+						}
+						console.log(_this.commodityList);
 					}
 					reader.readAsArrayBuffer(f);
 				}
@@ -102,7 +126,7 @@
 				      		commodityObj['subtitle']=outdata[i][key];
 				      	}
 				      	else if(key=='零售价'){
-				      		commodityObj['marketPrice']=outdata[i][key];
+				      		commodityObj['retailPrice']=outdata[i][key];
 				      	}
 				      	else if(key=='会员价'){
 				      		commodityObj['vipPrice']=outdata[i][key];
@@ -111,7 +135,7 @@
 				      		commodityObj['stock']=outdata[i][key];
 				      	}
 				      	else if(key=='商品分类'){
-				      		commodityObj['categoryName']=outdata[i][key];
+				      		commodityObj['typeName']=outdata[i][key];
 				      	}
 				    }
 					commodityListArr.push(commodityObj);
@@ -124,10 +148,27 @@
 			},
 			//批量导入
 			batchImport(){
-				console.log(this.commodityList);
+				let params = JSON.parse(JSON.stringify(this.selections));
+				BatchAddCommodity(params).then(data => {
+					let { errMsg, errCode, value, success, extraInfo } = data;
+					if(success){
+						this.$message({
+							message: '导入成功',
+							type: 'success'
+						})
+					}
+					else{
+						this.$message({
+							message:'导入失败',
+							type: 'error'
+						})
+					}
+				});
 			}	
 		},
 		created(){
+			//获取所有商品分类
+			this.selectAllType();
 			this.tableHeight=document.documentElement.clientHeight-255;
 		}
 	}

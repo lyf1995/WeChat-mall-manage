@@ -25,9 +25,15 @@ export const UpdateType = params=>{ return axios.post(`${base}/commodity/updateT
 export const DeleteType = params=>{ return axios.post(`${base}/commodity/deleteType`, params).then(res => res.data).catch(error=>error); };
 //查询所有商品
 export const SelectAllCommodity = params=>{ return axios.post(`${base}/commodity/selectAllCommodity`, params).then(res => res.data).catch(error=>error); };
-//新增商品分类
+//根据id查询商品
+export const SelectCommodityById = params=>{ return axios.post(`${base}/commodity/selectCommodityById`, params).then(res => res.data).catch(error=>error); };
+//新增商品
 export const AddCommodity = params=>{ return axios.post(`${base}/commodity/addCommodity`, params).then(res => res.data).catch(error=>error); };
-//修改商品分类
+//批量创建商品
+export const BatchAddCommodity = params=>{ return axios.post(`${base}/commodity/batchAddCommodity`, params).then(res => res.data).catch(error=>error); };
+//修改商品
 export const UpdateCommodity = params=>{ return axios.post(`${base}/commodity/updateCommodity`, params).then(res => res.data).catch(error=>error); };
-//删除商品分类
+//删除商品
 export const DeleteCommodity = params=>{ return axios.post(`${base}/commodity/deleteCommodity`, params).then(res => res.data).catch(error=>error); };
+//还原商品
+export const ReductionCommodity = params=>{ return axios.post(`${base}/commodity/reductionCommodity`, params).then(res => res.data).catch(error=>error); };

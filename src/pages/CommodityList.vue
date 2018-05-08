@@ -9,8 +9,8 @@
     				<el-input v-model="searchInfo.subtitle" placeholder="商品描述"></el-input>
   				</el-form-item>
   				<el-form-item label="商品分类">
-    				<el-select v-model="searchInfo.categoryName" placeholder="商品分类" clearable>
-    					<el-option v-for="(item, index) in categoryList" :value="item.id" :label="item.typeName" :key="index"></el-option>
+    				<el-select v-model="searchInfo.typeId" placeholder="商品分类" clearable>
+    					<el-option v-for="(item, index) in typeList" :value="item.id" :label="item.typeName" :key="index"></el-option>
     				</el-select>
   				</el-form-item>
   				<el-form-item label="状态">
@@ -44,19 +44,22 @@
 			</div>
 			<el-table :data="commodityList" border style="width: 100%" v-loading="loading">
 				<el-table-column type="index" label="序号" width="50"></el-table-column>
-				<el-table-column prop="name" label="商品名称" ></el-table-column>
-				<el-table-column prop="subtitle" label="商品描述" ></el-table-column>
-				<el-table-column prop="marketPrice" label="零售价" width="80"></el-table-column>
+				<el-table-column prop="name" label="商品名称" width="300" class="ellipsis"></el-table-column>
+				<el-table-column prop="subtitle" label="商品描述" class="ellipsis"></el-table-column>
+				<el-table-column prop="retailPrice" label="零售价" width="80"></el-table-column>
 				<el-table-column prop="vipPrice" label="会员价" width="80"></el-table-column>
 				<el-table-column prop="stock" label="库存" width="80"></el-table-column>
-				<el-table-column prop="categoryName" label="商品分类" width="100"></el-table-column>
+				<el-table-column prop="typeName" label="商品分类" width="100"></el-table-column>
 				<el-table-column label="操作" width="200" fixed="right" align="center">
       				<template slot-scope="scope">
         				<el-button size="mini" type="primary" @click="goToDetail(scope.row)">
         					<i class="iconfont icon-icon6" style="margin-right:5px;"></i>编辑
         				</el-button>
-        				<el-button size="mini" type="danger" @click="deleteCommodity(scope.row)">
+        				<el-button size="mini" type="danger" @click="deleteCommodity(scope.row)" v-if="scope.row.isDelete === 0">
         					<i class="iconfont icon-shanchu" style="margin-right:5px;"></i>删除
+        				</el-button>
+        				<el-button size="mini" type="danger" @click="reductionCommodity(scope.row)" v-else>
+        					<i class="iconfont icon-shanchu" style="margin-right:5px;"></i>还原
         				</el-button>
       				</template>
 				</el-table-column>
@@ -70,32 +73,22 @@
 	</div>
 </template>
 <script>
-	import { SelectAllCommodity, AddCommodity, UpdateCommodity, DeleteCommodity, SelectAllType } from '@/js/api'
+	import { SelectAllCommodity, AddCommodity, UpdateCommodity, DeleteCommodity, SelectAllType, ReductionCommodity } from '@/js/api'
 	export default {
 		data(){
 			return{
 				loading: false,
-				categoryList:[],
+				typeList:[],
 				searchInfo: {
 					name: '',
 					subtitle: '',
-					categoryName: '',
+					typeId: '',
 					status: '0',
 					pageIndex: 1,
 					pageSize: 15,
 					pageTotal: 0
 				},
-				commodityList: [
-					// {
-					// 	id: 1,
-					// 	name: '智利泰瑞贵族珍藏佳美娜干红葡萄酒750mL',
-					// 	subtitle: '非凡深邃的红宝石颜色，红色浆果、烟草、巧克力和纯净的果香演绎珍藏赤霞珠的盛世繁华、热情而高雅',
-					// 	marketPrice: '110',
-					// 	vipPrice: '120',
-					// 	stock: '10000',
-					// 	categoryName: '食品生鲜'
-					// }
-				]
+				commodityList: []
 			}
 		},
 		methods:{
@@ -104,7 +97,7 @@
 				SelectAllType({id: '',typeName: ''}).then(data =>{
 					let { errMsg, errCode, value, success, extraInfo } = data;
 					if(success){
-						this.categoryList = value;
+						this.typeList = value;
 					}
 					else{
 						this.$message({
@@ -112,7 +105,6 @@
 							type: 'error'
 						})
 					}
-					this.loading = false;
 				});
 			},
 			getCommodityInfoList(){
@@ -122,6 +114,14 @@
 					let { errMsg, errCode, value, success, extraInfo } = data;
 					if(success){
 						this.commodityList = value;
+						for(let item of this.commodityList){
+							for(let childItem of this.typeList){
+								if(item.typeId == childItem.id){
+									item.typeName = childItem.typeName
+								}
+							}
+						}
+						this.searchInfo.total = parseInt(extraInfo);
 					}
 					else{
 						this.$message({
@@ -166,7 +166,7 @@
 				require.ensure([], () => {　　　　　　　　
 			    const { export_json_to_excel } = require('@/vendor/Export2Excel');　　//引入文件　　　　　　
 			    const tHeader = ['商品名称','商品描述','零售价','会员价','库存','商品分类']; //将对应的属性名转换成中文
-			    const filterVal = ['name','subtitle','marketPrice','vipPrice','stock','categoryName'];//table表格中对应的属性名
+			    const filterVal = ['name','subtitle','retailPrice','vipPrice','stock','typeName'];//table表格中对应的属性名
 			    const list = this.commodityList;
 			    tHeader.unshift('序号');
 				filterVal.unshift('index');
@@ -180,6 +180,7 @@
 			formatJson(filterVal, jsonData) {
 				return jsonData.map(v => filterVal.map(j => v[j]));
 			},
+			//删除商品
 			deleteCommodity(row){
 				this.$confirm('是否确定删除?', '提示', {
 		          	confirmButtonText: '确定',
@@ -189,11 +190,52 @@
 		        	var params = {
 		        		id: parseInt(row.id)
 		        	};
-		        	this.$message({
-		        		message: '删除成功',
-		        		type: 'success'
-		        	})
-		          	
+		        	DeleteCommodity(params).then(data => {
+		        		let { errMsg, errCode, value, success, extraInfo } = data;
+		        		if(success){
+		        			this.$message({
+				        		message: '删除成功',
+				        		type: 'success'
+				        	});
+				        	this.getCommodityInfoList();
+		        		}
+		        		else{
+		        			this.$message({
+				        		message: errMsg,
+				        		type: 'success'
+				        	})
+		        		}
+		        	});
+		        }).catch(() => {
+		           
+		        });
+			},
+			//还原商品
+			reductionCommodity(row){
+				this.$confirm('是否确定还原?', '提示', {
+		          	confirmButtonText: '确定',
+	         	 	cancelButtonText: '取消',
+		          	type: 'warning'
+		        }).then(() => {
+		        	var params = {
+		        		id: parseInt(row.id)
+		        	};
+		        	ReductionCommodity(params).then(data => {
+		        		let { errMsg, errCode, value, success, extraInfo } = data;
+		        		if(success){
+		        			this.$message({
+				        		message: '还原成功',
+				        		type: 'success'
+				        	});
+				        	this.getCommodityInfoList();
+		        		}
+		        		else{
+		        			this.$message({
+				        		message: errMsg,
+				        		type: 'success'
+				        	})
+		        		}
+		        	});
 		        }).catch(() => {
 		           
 		        });
@@ -228,5 +270,14 @@
 	}
 	.operation_btn i{
 		margin-right: 5px;
+	}
+	.ellipsis{
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.pagination_wrap{
+		float:right;
+		padding:20px 0;
 	}
 </style>
