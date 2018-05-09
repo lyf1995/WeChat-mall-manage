@@ -5,9 +5,9 @@
 				<el-form-item label="用户名">
     				<el-input v-model="searchInfo.phone" placeholder="用户名"></el-input>
   				</el-form-item>
-  				<el-form-item label="姓名">
+  				<!-- <el-form-item label="姓名">
     				<el-input v-model="searchInfo.name" placeholder="姓名"></el-input>
-  				</el-form-item>
+  				</el-form-item> -->
   				<el-form-item label="注册时间">
   					<el-date-picker v-model="searchInfo.registTime" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd">
   					</el-date-picker>
@@ -39,7 +39,8 @@
 				<el-table-column type="index" label="序号" width="50"></el-table-column>
 				<el-table-column prop="phone" label="用户名"></el-table-column>
 				<el-table-column prop="password" label="密码"></el-table-column>
-				<el-table-column prop="name" label="姓名"></el-table-column>
+				<el-table-column prop="money" label="积分"></el-table-column>
+				<!-- <el-table-column prop="name" label="姓名"></el-table-column> -->
 				<el-table-column prop="registTime" label="创建时间"></el-table-column>
 				<el-table-column prop="recentLoginTime" label="最近登陆时间"></el-table-column>
 				<el-table-column label="操作" width="200" fixed="right" align="center">
@@ -66,9 +67,10 @@
 					<el-form-item label="用户名(手机号码)" prop="phone">
     					<el-input v-model="userInfo.phone" placeholder="用户名"></el-input>
   					</el-form-item>
-  					<el-form-item label="姓名" prop="name">
+
+  					<!-- <el-form-item label="姓名" prop="name">
     					<el-input v-model="userInfo.name" placeholder="姓名"></el-input>
-  					</el-form-item>
+  					</el-form-item> -->
 					<el-form-item label="密码" prop="password">
     					<el-input type="password" v-model="userInfo.password" placeholder="密码"></el-input>
   					</el-form-item>
