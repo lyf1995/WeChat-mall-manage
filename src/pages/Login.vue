@@ -89,10 +89,9 @@
 
 <style>
 	.bg{
-		height: 100%;
+		height: 100vh;
 		background-size: cover;
-		background: black;
-		/*background-image:url(../assets/images/sunshine.png);*/
+		background-image:url(../assets/images/bg.jpg);
 		background-repeat:no-repeat;
 		background-position:center;
 		background-attachment:fixed;

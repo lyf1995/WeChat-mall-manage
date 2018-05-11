@@ -44,11 +44,11 @@
 			</div>
 			<el-table :data="commodityList" border style="width: 100%" v-loading="loading">
 				<el-table-column type="index" label="序号" width="50"></el-table-column>
-				<el-table-column prop="name" label="商品名称" width="300" class="ellipsis"></el-table-column>
+				<el-table-column prop="name" label="商品名称" width="200" class="ellipsis"></el-table-column>
 				<el-table-column prop="subtitle" label="商品描述" class="ellipsis"></el-table-column>
-				<el-table-column prop="retailPrice" label="零售价" width="80"></el-table-column>
-				<el-table-column prop="vipPrice" label="会员价" width="80"></el-table-column>
-				<el-table-column prop="stock" label="库存" width="80"></el-table-column>
+				<el-table-column prop="retailPrice" label="零售价" width="60"></el-table-column>
+				<el-table-column prop="vipPrice" label="会员价" width="60"></el-table-column>
+				<el-table-column prop="stock" label="库存" width="60"></el-table-column>
 				<el-table-column prop="typeName" label="商品分类" width="100"></el-table-column>
 				<el-table-column label="操作" width="200" fixed="right" align="center">
       				<template slot-scope="scope">
