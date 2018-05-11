@@ -38,4 +38,6 @@ export const DeleteCommodity = params=>{ return axios.post(`${base}/commodity/de
 //还原商品
 export const ReductionCommodity = params=>{ return axios.post(`${base}/commodity/reductionCommodity`, params).then(res => res.data).catch(error=>error); };
 //查询所有订单
-export const SelectAllOrder = params=>{ return axios.post(`${base}/order/SelectAllOrder`, params).then(res => res.data).catch(error=>error); };
+export const SelectAllOrder = params=>{ return axios.post(`${base}/order/selectAllOrder`, params).then(res => res.data).catch(error=>error); };
+//修改订单状态
+export const ChangeOrderStatus = params =>{ return axios.post(`${base}/order/changeOrderStatus`, params).then(res => res.data).catch(error => error); };
