@@ -29,10 +29,10 @@
 		</el-card>
 		<el-card>
 			<div class="operation_wrap clearfix">
-				<el-button type="primary" class="operation_btn" @click="exportExcel">
+				<!-- <el-button type="primary" class="operation_btn" @click="exportExcel">
 					<i class="iconfont icon-tubiao105"></i>
 					导出
-				</el-button>
+				</el-button> -->
 				<el-button type="primary" class="operation_btn" @click="goToBatchAdd">
 					<i class="iconfont icon-icon-import"></i>
 					导入

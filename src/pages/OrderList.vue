@@ -175,7 +175,7 @@
 							message:'发货成功',
 							type: 'success'
 						});
-						this.getOrderInfoList();
+						this.getOrderInfoList();	
 					}
 					else{
 						this.$message({

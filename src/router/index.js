@@ -119,13 +119,13 @@ export default new Router({
     		}
     	]
     },
-    {
-    	path: '/statisticalReport',
-    	name: '统计报表',
-        component: Home,
-    	menuShow: true,
-    	hasChild: false,
-    	iconfont: 'iconfont icon-tongji',
-    }
+    // {
+    // 	path: '/statisticalReport',
+    // 	name: '统计报表',
+    //     component: Home,
+    // 	menuShow: true,
+    // 	hasChild: false,
+    // 	iconfont: 'iconfont icon-tongji',
+    // }
   ]
 })

@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+axios.defaults.withCredentials=true;
+
 export const netName = '微信商城后台管理系统';
 let base = window.g.ApiUrl;
 
@@ -41,3 +43,5 @@ export const ReductionCommodity = params=>{ return axios.post(`${base}/commodity
 export const SelectAllOrder = params=>{ return axios.post(`${base}/order/selectAllOrder`, params).then(res => res.data).catch(error=>error); };
 //修改订单状态
 export const ChangeOrderStatus = params =>{ return axios.post(`${base}/order/changeOrderStatus`, params).then(res => res.data).catch(error => error); };
+//修改图片主图
+export const UpdateMainImage = params =>{ return axios.post(`${base}/image/mainImage`, params).then(res => res.data).catch(error => error); };
