@@ -11,6 +11,8 @@ const AddCommodity = resolve => require(['@/pages/AddCommodity'], resolve);
 const BatchAddCommodity = resolve => require(['@/pages/BatchAddCommodity'], resolve);
 const CommodityCategory = resolve => require(['@/pages/CommodityCategory'], resolve);
 const BatchAddUser = resolve => require(['@/pages/BatchAddUser'], resolve);
+const ShareList = resolve => require(['@/pages/ShareList'], resolve);
+const RebateSet = resolve => require(['@/pages/RebateSet'], resolve);
 
 Vue.use(Router)
 
@@ -116,7 +118,14 @@ export default new Router({
     			path: '/shareManage/shareList',
     			name: '分享列表',
     			menuShow: true,
-    		}
+                component: ShareList
+    		},
+            {
+                path: '/shareManage/rebateSet',
+                name: '返利设置',
+                menuShow: true,
+                component: RebateSet
+            }
     	]
     },
     // {

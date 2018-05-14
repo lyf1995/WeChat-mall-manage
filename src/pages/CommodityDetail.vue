@@ -42,7 +42,7 @@
 					</div>
 				</el-card>
 		  	</el-tab-pane>
-		  	<el-tab-pane label="商品详情" name="商品详情">
+		  	<el-tab-pane label="商品主图" name="商品主图">
 		  	 	<el-card>
 		  	 		<el-form :model="commodityInfo" label-position="right"  label-width="100px" :rules="rules" ref="ruleForm" :status-icon="true">
 		  			<el-form-item label="商品主图">

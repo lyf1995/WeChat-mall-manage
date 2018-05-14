@@ -45,3 +45,11 @@ export const SelectAllOrder = params=>{ return axios.post(`${base}/order/selectA
 export const ChangeOrderStatus = params =>{ return axios.post(`${base}/order/changeOrderStatus`, params).then(res => res.data).catch(error => error); };
 //修改图片主图
 export const UpdateMainImage = params =>{ return axios.post(`${base}/image/mainImage`, params).then(res => res.data).catch(error => error); };
+//查询所有分享
+export const SelectAllShare = params =>{ return axios.post(`${base}/share/selectAllShare`, params).then(res => res.data).catch(error => error); };
+//根据分享id查看分享点击详情
+export const SelectShareUserByShareId = params =>{ return axios.post(`${base}/share/selectShareUserByShareId`, params).then(res => res.data).catch(error => error); };
+//获取返利设置
+export const GetRebateInfo = params =>{ return axios.post(`${base}/rebate/getRebateInfo`, params).then(res => res.data).catch(error => error); };
+//修改返利设置
+export const UpdateRebate = params =>{ return axios.post(`${base}/rebate/updateRebate`, params).then(res => res.data).catch(error => error); };

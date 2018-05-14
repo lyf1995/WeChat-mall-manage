@@ -24,7 +24,7 @@
 		data(){
 			return{
 				netName:netName,
-				username:'test',
+				username:'admin',
 				nowTime:'',
 			}
 		},

@@ -32,10 +32,10 @@
 		</el-card>
 		<el-card>
 			<div class="operation_wrap clearfix">
-				<el-button type="primary" class="operation_btn" @click="exportExcel">
+				<!-- <el-button type="primary" class="operation_btn" @click="exportExcel">
 					<i class="iconfont icon-tubiao105"></i>
 					导出
-				</el-button>
+				</el-button> -->
 			</div>
 			<el-table :data="orderList" border style="width: 100%" v-loading="loading">
 				<el-table-column type="index" label="序号" width="50"></el-table-column>
@@ -50,7 +50,7 @@
 					<template slot-scope="scope">
         				<div class="commodity" v-for="(item, index) in scope.row.productsList" style="padding-bottom:10px;">
         					<p>{{item.goodsName}}</p>
-        					<p>单价:{{item.goodsVipPrice}}元/件</p>
+        					<p>单价:{{item.goodsVipPrice|monyFormat}}元/件</p>
         					<p>数量:{{item.goodsNumber}}/件</p>
         				</div>
       				</template>
